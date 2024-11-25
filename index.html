@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -17,5 +17,50 @@
   <div id="temperature-chart" class="chart"></div>
   <div id="co2-chart" class="chart"></div>
   <div id="sea-level-chart" class="chart"></div>
+  
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Climate Change Visualizations</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .chart { width: 80%; margin: 0 auto; }
+    .dot { cursor: pointer; }
+    .axis path, .axis line { shape-rendering: crispEdges; }
+  </style>
+</head>
+<body>
+  <h1>Disaster Events Visualization</h1>
+
+  <!-- Dropdown to select disaster type -->
+  <label for="disaster-select">Select Disaster Type: </label>
+  <select id="disaster-select">
+    <option value="All Disasters">All Disasters</option>
+    <option value="Wet Mass Movement">Wet Mass Movement</option>
+    <option value="Wildfire">Wildfire</option>
+    <option value="Volcanic Activity">Volcanic Activity</option>
+    <option value="Glacial Lake Outburst Flood">Glacial Lake Outburst Flood</option>
+    <option value="Fog">Fog</option>
+    <option value="Flood">Flood</option>
+    <option value="Extreme Temperature">Extreme Temperature</option>
+    <option value="Extreme Weather">Extreme Weather</option>
+    <option value="Earthquake">Earthquake</option>
+    <option value="Dry Mass Movement">Dry Mass Movement</option>
+    <option value="Drought">Drought</option>
+  </select>
+
+  <!-- Chart Container -->
+  <div id="disaster-chart" class="chart"></div>
+  <div id="legend"></div>
+
+
+  <script type="module" src="main.js"></script>
 </body>
 </html>
