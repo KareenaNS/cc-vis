@@ -5,15 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Climate Change Visualizations</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <style>
+  <!-- <style>
     body { font-family: Arial, sans-serif; }
     .chart { width: 80%; margin: 0 auto; }
     .dot { cursor: pointer; }
     .axis path, .axis line { shape-rendering: crispEdges; }
-  </style>
+  </style> -->
+  <link rel="stylesheet" href="style.css"> <!-- Link to your custom CSS file -->
 </head>
 <body>
-  <h1>Disaster Events Visualizations</h1>
+    <header>
+        <div class="title-container">
+            <h1 class="global-text">GLOBAL</h1>
+            <div class="globe-container">
+                <img src="/globe.gif" alt="Rotating Globe" class="globe-gif">
+            </div>
+            <h1 class="climate-text">CLIMATE CHANGE</h1>
+        </div>
+        <div class="project-description">
+            <h2>FACT</h2>
+            <p>Climate change has started to become one of the largest growing 
+                challenges for ecosystems, economies, and health of this world.</p>
+        </div>
+        <div class="fade-in-section">
+            <h2>And time has not helped that.</h2>
+        </div>
+        <div class="typewriter-section">
+            <p class="typewriter-text">Just look at the natural disasters we've had since 1900...</p>
+          </div>
+    </header>
+
   <label for="disaster-select">Select Disaster Type: </label>
   <select id="disaster-select">
     <option value="All Disasters">All Disasters</option>
@@ -30,9 +51,19 @@
     <option value="Drought">Drought</option>
   </select>
   <div id="disaster-chart" class="chart"></div>
-  <div id="legend"></div>
+  <!-- legend here? -->
   <div id="tooltip" style="position: absolute; background: lightgray; padding: 8px; border-radius: 5px; display: none;"></div>
+  <label for="country-select">Select a country:</label>
+  <select id="country-select">
+    <option value="All">All Countries</option>
+    <option value="United States">United States</option>
+    <option value="India">India</option>
+    <option value="China">China</option>
+    <option value="United Kingdon">United Kingdom</option>
 
+  </select>
+  <div id="co2-chart"></div>
+  <div id="tooltip"></div>
 
   <script type="module" src="main.js"></script>
 </body>
