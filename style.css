@@ -1,0 +1,219 @@
+@font-face {
+  font-family: 'Joystix Monospace';
+  src: url('fonts/joystix-monospace.otf') format('truetype'); /* Adjust path based on where you store the font */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Style the label text */
+label {
+  color: white; /* Make the label text white */
+  font-family: 'Joystix Monospace', monospace; /* Optional: Use the pixel-like font */
+  font-size: 20px; /* Adjust font size */
+  margin-right: 10px; /* Space between label and dropdown */
+}
+
+/* Style the dropdown (select) */
+select {
+  background-color: rgba(0, 0, 0, 0.7); /* Make the background of the dropdown slightly transparent dark */
+  color: white; /* Text color inside the dropdown */
+  border: 2px solid white; /* White border for contrast */
+  padding: 10px; /* Padding inside the dropdown */
+  font-family: 'Joystix Monospace', monospace; /* Optional: Use the pixel-like font */
+  font-size: 16px; /* Adjust font size */
+}
+
+/* Option items inside the dropdown */
+select option {
+  background-color: black; /* Background for options */
+  color: white; /* Text color for options */
+}
+
+/* Optional: Make sure dropdown appears above any other content */
+select:focus {
+  outline: none; /* Remove default focus outline */
+  border-color: #00ff00; /* Optional: Change the border color when focused */
+}
+
+#tooltip {
+    position: absolute;
+    background-color: lightgray;
+    padding: 8px;
+    border-radius: 5px;
+    pointer-events: none; /* Prevents the tooltip from interfering with other elements */
+    display: none; /* Start hidden */
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .project-description {
+    opacity: 0;
+    transform: translateY(50px); /* Start from below */
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    padding: 50px;
+    color: #ffffff;
+    padding-top: 300px;
+  }
+
+  .fade-in-section {
+    opacity: 0; /* Start invisible */
+    transition: opacity 2s ease-in-out; /* Smooth fade-in effect */
+    padding: 50px;
+    padding-top: 300px;
+    padding-bottom: 300px;
+    
+    color: #ffffff;
+    text-align: center;
+  }
+  .fade-in-section.visible {
+    opacity: 1; /* Make the text visible when it comes into view */
+  }
+  .fade-in-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'Joystix Monospace', monospace;
+    color: #ffffff;
+  }
+  /* When the section is in view, it will animate */
+  .project-description.visible {
+    opacity: 1;
+    transform: translateY(0); /* Move into the natural position */
+  }
+
+
+.typewriter-text {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Joystix Monospace', monospace;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 4px solid #ffffff; /* Cursor effect */
+  width: 0; /* Initially hidden */
+  opacity: 0; /* Hidden until visible on scroll */
+  transition: opacity 0.5s ease-out; /* Smooth fade-in when revealed */
+}
+.typewriter-text.start-typing {
+  opacity: 1; /* Make visible when scrolled into view */
+  width: auto; /* Allow typing animation to take effect */
+  animation: typing 4s steps(50) 1s 1 normal both, blink-caret 0.75s step-end infinite;
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+
+
+#chart-container {
+  text-align: center;
+  margin-bottom: 300px;
+  margin-top: 300px;
+}
+
+h2 {
+  color: white;         /* Make the heading text white */
+  font-size: 1.8rem;    /* Adjust font size */
+  font-family: 'Joystix Monospace', monospace;
+}
+
+/* Make the x and y axis lines white */
+.x-axis path, .y-axis path {
+  stroke: white !important;
+}
+
+/* Make the x and y axis ticks text white */
+.x-axis text, .y-axis text {
+  fill: white !important;
+}
+
+/* Make the axis labels white */
+.x-axis-label, .y-axis-label {
+  fill: white !important;
+}
+
+#factory-gif {
+  width: 500px;         /* Adjust the width of the GIF */
+  height: auto;         /* Maintain aspect ratio */
+  margin-top: 20px;     /* Add space above the GIF */
+  margin-bottom: 20px;  /* Add space below the GIF */
+}
+
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'VT323', monospace;
+  background: url('stars.gif') no-repeat center center fixed;  /* Use local stars.gif */
+  background-size: cover;
+
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  font-family: 'Joystix Monospace', monospace; /* Use Joystix font */
+}
+
+/* Title Container (holds both text and the globe) */
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Global Text (Above the globe) */
+.global-text {
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px; /* Space between the text and the globe */
+  margin-left: 20px;
+  margin-top: 20px;
+  font-family: 'Joystix Monospace', monospace; /* Use Joystix font */
+
+}
+
+/* Globe Container */
+.globe-container {
+  width: 300px;
+  height: 300px;
+  margin-bottom: 40px; /* Space between the globe and the 'Climate Change' text */
+  margin-left: -30px;
+  position: relative;
+}
+
+/* Globe Styling and Animation */
+.globe-gif {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Spin Globe Animation */
+@keyframes spinGlobe {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* Climate Change Text (Below the globe) */
+.climate-text {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: 'Joystix Monospace', monospace; /* Use Joystix font */
+  color: #ffffff;
+}
