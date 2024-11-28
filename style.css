@@ -157,6 +157,7 @@ h2 {
   font-family: 'VT323', monospace;
   background: url('images/stars.gif') no-repeat center center fixed;  /* Use local stars.gif */
   background-size: cover;
+  background-position: center;
 
 }
 
