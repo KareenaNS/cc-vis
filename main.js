@@ -279,6 +279,206 @@ d3.csv('data/annual-co2-emissions-by-country.csv').then(function(data) {
     .style("display", "none");
 });
 
+d3.csv('data/global-temperature-anomalies-by-month.csv').then(data => {
+    
+  data.forEach(d => {
+    d.Year = +d.Year;
+    d.Temperature_Change = +d["Temperature anomaly"]; 
+  });
+
+  const margin = { top: 50, right: 150, bottom: 120, left: 80 };
+  const sliderHeight = 50;
+  const width = 1200 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
+
+
+  const svg = d3.select("#Global-Temperature-Changes")
+    .append("svg")
+    .attr("viewBox", `0 0 1500 850`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  const mainGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const tooltip = d3.select(".tooltip");
+
+ 
+  const x = d3.scaleBand()
+    .domain(data.map(d => d.Year))
+    .range([0, width])
+    .padding(0.1);
+
+  const y = d3.scaleLinear()
+    .domain([d3.min(data, d => d.Temperature_Change), d3.max(data, d => d.Temperature_Change)])
+    .range([height, 0]);
+
+  const xZoom = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.Year))
+    .range([0, width]);
+
+  
+  const color = d3.scaleSequential()
+    .domain([d3.min(data, d => d.Temperature_Change), d3.max(data, d => d.Temperature_Change)])
+    .interpolator(d3.interpolatePlasma);
+
+
+  const xAxisGroup = mainGroup.append("g")
+    .attr("class", "axis")
+    .attr("transform", `translate(0,${height})`)
+    .style("fill", "white");
+
+  const yAxisGroup = mainGroup.append("g")
+    .attr("class", "axis")
+    .style("fill", "white");
+
+  yAxisGroup.call(d3.axisLeft(y).ticks(10).tickFormat(d => d + "°C"))
+  .selectAll("text")
+  .style("fill", "white"); 
+
+  mainGroup.append("text")
+    .attr("class", "axis-label")
+    .attr("x", width / 2)
+    .attr("y", height + 70)
+    .style("fill", "white")
+    .text("Year");
+
+  mainGroup.append("text")
+    .attr("class", "axis-label")
+    .attr("x", -height / 2 - 130)
+    .attr("y", -50)
+    .attr("transform", "rotate(-90)")
+    .style("fill", "white")
+    .text("Global Temperature Change (°C)");
+
+  const barsGroup = mainGroup.append("g");
+
+  function updateBars(filteredData) {
+    const bars = barsGroup.selectAll(".bar")
+      .data(filteredData, d => d.Year);
+
+    bars.enter()
+      .append("rect")
+      .attr("class", "bar")
+      .merge(bars)
+      .attr("x", d => x(d.Year))
+      .attr("y", d => y(Math.max(0, d.Temperature_Change)))
+      .attr("width", x.bandwidth())
+      .attr("height", d => Math.abs(y(d.Temperature_Change) - y(0)))
+      .attr("fill", d => color(d.Temperature_Change))
+      .on("mouseover", function(event, d) {
+        tooltip
+          .style("opacity", 1)
+          .html(`Year: ${d.Year}<br>Global Temperature Change (°C): ${d.Temperature_Change.toFixed(2)}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
+        d3.select(this).attr("stroke", "white").attr("stroke-width", 2);
+      })
+      .on("mouseout", function() {
+        tooltip.style("opacity", 0);
+        d3.select(this).attr("stroke", "none");
+      });
+
+    bars.exit().remove();
+  }
+
+  function updateAxis(filteredData) {
+const visibleYears = filteredData.map(d => d.Year).filter(year => year % 10 === 0); 
+xAxisGroup.call(
+d3.axisBottom(x)
+  .tickValues(visibleYears) 
+).selectAll("text")
+.attr("transform", "rotate(-45)")
+.style("text-anchor", "end")
+.style("fill", "white");
+}
+
+
+ 
+  updateBars(data);
+  updateAxis(data);
+
+
+  const sliderGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left},${height + margin.top + 90})`)
+    .style("fill", "white");
+
+  const brush = d3.brushX()
+    .extent([[0, 0], [width, sliderHeight]])
+    .on("brush end", event => {
+      if (event.selection) {
+        const [x0, x1] = event.selection.map(d => Math.round(xZoom.invert(d))); 
+
+        const filteredData = data.filter(d => d.Year >= x0 && d.Year <= x1);
+
+        x.domain(filteredData.map(d => d.Year));
+
+        updateBars(filteredData);
+        updateAxis(filteredData);
+      }
+    });
+
+  sliderGroup.call(brush)
+    .call(brush.move, xZoom.range());
+
+
+  const legendHeight = height;
+  const legendWidth = 20;
+
+  const legend = mainGroup.append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(${width + 60},0)`);
+
+  const legendScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d.Temperature_Change), d3.max(data, d => d.Temperature_Change)])
+    .range([legendHeight, 0]);
+
+  const legendAxis = d3.axisRight(legendScale)
+    .ticks(10)
+    .tickFormat(d => d + "°C");
+    
+
+  legend.append("g")
+    .call(legendAxis)
+    .selectAll("text")
+    .attr("fill", "white")
+    .attr("x", 25)
+    .style("font-size", "12px");
+
+  const gradient = legend.append("defs")
+    .append("linearGradient")
+    .attr("id", "gradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "0%")
+    .attr("y2", "100%");
+
+  gradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", d3.interpolatePlasma(1));
+
+  gradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", d3.interpolatePlasma(0));
+
+  legend.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", legendWidth)
+    .attr("height", legendHeight)
+    .style("fill", "url(#gradient)");
+
+  legend.append("text")
+    .attr("class", "legend-title")
+    .attr("x", legendWidth / 2 + 10)
+    .attr("y", -10)
+    .attr("text-anchor", "middle")
+    .style("fill", "white")
+    .text("GLOBAL TEMPERATURE CHANGE (°C)");
+
+}).catch(error => console.error("Error loading the CSV file:", error));
+
+=======
+
 //Sea Level Rise Visualization
 d3.csv("data/sea-level.csv").then(function(data) {
 
@@ -382,3 +582,4 @@ d3.csv("data/sea-level.csv").then(function(data) {
     });
     
 });
+
