@@ -278,6 +278,7 @@ d3.csv('data/annual-co2-emissions-by-country.csv').then(function(data) {
     .style("border-radius", "5px")
     .style("display", "none");
 });
+
 d3.csv('data/global-temperature-anomalies-by-month.csv').then(data => {
     
   data.forEach(d => {
@@ -475,4 +476,110 @@ d3.axisBottom(x)
     .text("GLOBAL TEMPERATURE CHANGE (°C)");
 
 }).catch(error => console.error("Error loading the CSV file:", error));
+
+=======
+
+//Sea Level Rise Visualization
+d3.csv("data/sea-level.csv").then(function(data) {
+
+  data.forEach(d => {
+      d.Date = new Date(d.Day);
+      d.SeaLevel = +d["Global sea level as an average of Church and White (2011) and UHSLC data"]; // Use the average sea level column
+  });
+
+  const width = 1000;
+  const height = 500;
+  const margin = { top: 50, right: 30, bottom: 50, left: 70 };
+
+  const svg = d3.select("#sea-level-chart") 
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  const xScale = d3.scaleTime()
+    .domain(d3.extent(data, d => d.Date)) 
+    .range([0, width]);
+
+  const yScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d.SeaLevel), d3.max(data, d => d.SeaLevel)])
+    .range([height, 0]);
+  
+  const xAxis = d3.axisBottom(xScale).ticks(10); 
+  const yAxis = d3.axisLeft(yScale);
+
+
+  svg.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis)
+    .selectAll("text")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end")
+    .style("fill", "white");
+
+  svg.append("g")
+    .attr("class", "y-axis")
+    .call(yAxis)
+    .selectAll("text")
+    .style("fill", "white");
+
+
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + margin.bottom - 10)
+    .style("text-anchor", "middle")
+    .style("fill", "white")
+    .text("Year");
+
+  svg.append("text")
+    .attr("x", -height / 2)
+    .attr("y", -margin.left + 20)
+    .attr("transform", "rotate(-90)")
+    .style("text-anchor", "middle")
+    .style("fill", "white")
+    .text("Global Sea Level (mm)");
+
+  
+  const line = d3.line()
+    .x(d => xScale(d.Date))
+    .y(d => yScale(d.SeaLevel))
+    .curve(d3.curveMonotoneX);
+
+  svg.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#00f0ff")
+    .attr("stroke-width", 2)
+    .attr("d", line);
+
+
+  const tooltip = d3.select("#tooltip")
+    .style("position", "absolute")
+    .style("background-color", "lightgray")
+    .style("padding", "8px")
+    .style("border-radius", "5px")
+    .style("display", "none");
+
+    svg.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", d => xScale(d.Date))
+    .attr("cy", d => yScale(d.SeaLevel))
+    .attr("r", 3)
+    .attr("fill", "#ff5722")
+    .style("opacity", 0.5) 
+    .on("mouseover", function(event, d) {
+        tooltip.style("display", "inline-block")
+            .html(`Date: ${d.Date.toDateString()}<br>Sea Level: ${d.SeaLevel.toFixed(2)} mm`)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 25) + "px");
+    })
+    .on("mouseout", function() {
+        tooltip.style("display", "none");
+    });
+    
+});
 
