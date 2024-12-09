@@ -5,5 +5,6 @@ A cool, informative web-based project that visualizes key climate change data li
 1. For Natural Disaster Visualization: https://ourworldindata.org/grapher/number-of-natural-disaster-events
 2. For CO2 Emissions by Country: https://ourworldindata.org/co2-emissions 
 3. For Correlation Between Temperature and CO2 Levels:  https://ourworldindata.org/climate-change
-4. For Temperature Change Over Time: 
+4. For Temperature Change Over Time: https://gml.noaa.gov/ccgg/trends/data.html
+https://climate.nasa.gov/vital-signs/global-temperature/?intent=121
 5. For Sea Level Rise Over Time: https://ourworldindata.org/grapher/sea-level
