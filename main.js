@@ -477,8 +477,6 @@ d3.axisBottom(x)
 
 }).catch(error => console.error("Error loading the CSV file:", error));
 
-=======
-
 //Sea Level Rise Visualization
 d3.csv("data/sea-level.csv").then(function(data) {
 
